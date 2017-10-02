@@ -9,13 +9,14 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
  *
  * @author Alexander
  */
-public class ServerClientThread extends Thread{
+public class ServerClientThread extends Thread {
 
     public Socket clientSocket;
 
@@ -37,72 +38,59 @@ public class ServerClientThread extends Thread{
 
             String result = "";
 
-            Date d = new Date();
-            String date = d.toString();
-            boolean hashtag = false;
-            
+            boolean login = false;
+            boolean logout = false;
+
             while ((inputLine = fromClient.readLine()) != null) {
                 
-                for (int i = 0; i < inputLine.length(); i++) {
-                    if (inputLine.charAt(i) == '#') {
-                        hashtag = true;
-                        String cmd = inputLine.substring(0, i);
-                        switch (cmd) {
-                            case "TIME":
-                                result = date;
-                                break;
-                            case "UPPER":
-                                result = (inputLine.substring(i + 1)).toUpperCase();
-                                break;
-                            case "LOWER":
-                                result = (inputLine.substring(i + 1)).toLowerCase();
-                                break;
-                            case "REVERSE":
-                                result = new StringBuilder(inputLine.substring(i + 1)).reverse().toString();
-                                break;
-                            case "TRANSLATE": // Prøv et dyr
-                                // <editor-fold defaultstate="collapsed" desc="Swich with tanslatable words">
-                                String word = inputLine.substring(i + 1).toLowerCase();
-                                switch (word) {
-                                    case "hund":
-                                        result = "dog";
-                                        break;
-                                    case "fugl":
-                                        result = "bird";
-                                        break;
-                                    case "fisk":
-                                        result = "fish";
-                                        break;
-                                    case "abe":
-                                        result = "ape";
-                                        break;
-                                    case "kat":
-                                        result = "cat";
-                                        break;
-                                    case "hest":
-                                        result = "horse";
-                                        break;
-                                    case "ko":
-                                        result = "cow";
-                                        break;
-                                    default:
-                                        result = "I don't know that animal";
-                                }
-                                // </editor-fold>
-                                break;
-                            default:
-                                result = "#COMMAND_NOT_FOUND";
-
+                if (inputLine.contains(":")) {
+                String cmd = inputLine.substring(0, inputLine.indexOf(":"));
+                switch (cmd) {
+                    case "LOGIN":
+                        // Add username
+                        if (!login) {
+                            String name = (inputLine.substring(inputLine.indexOf(":") + 1)).replace(" ", "");
+                            result = name;
+                            login = true;
+                        } else {
+                            result = "You are allready loged in";
                         }
-                    } else if (!hashtag) {
-                        result = inputLine;
-                    }
+                        break;
+                    case "MSG":
+                        // 
+                        if (!login) {
+                            result = "You need to login to message other users";
+                        } else {
+                            String recivers = (inputLine.substring(inputLine.indexOf(":") + 1, inputLine.lastIndexOf(":"))).replace(" ", "");
+                            String message = inputLine.substring(inputLine.lastIndexOf(":") + 1);
+                            if (message.charAt(0) == ' ') {
+                                message = message.substring(1);
+                            }
+                            result = "To: " + recivers + ": " + message;
+                        }
+                        break;
+                    case "LOGOUT":
+                        // Log user out
+                        if (!login) {
+                            result = "You need to login to message other users";
+                        } else {
+                            result = "User loged out";
+                            logout = true;
+                        }
+                        break;
+                    case "HELP":
+                        result = "LOGIN:<name> | MSG<recivers>:<message> | LOGOUT:";
+                    default:
+                        result = "Command not found - type 'HELP: to see all commands";
                 }
-
+                }
+                else {
+                    result = "Command not found - type 'HELP:' to see all commands";
+                }
+                
                 toClient.println(result);
-                hashtag = false;
 
-                if (inputLine.equals("Bye.")) {
+                if (logout) {
                     break;
                 }
             }
@@ -116,5 +104,4 @@ public class ServerClientThread extends Thread{
         }
     }
 
-    
 }
