@@ -1,6 +1,6 @@
 package tcp;
 
 public class Client {
-    //test
+    // Jeg SKRIVER DEN HER >:) 
     
 }
