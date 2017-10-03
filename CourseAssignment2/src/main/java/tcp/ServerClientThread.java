@@ -47,6 +47,14 @@ public class ServerClientThread extends Thread {
                      username = parts[1];
                      server.addHandler(username, this);
                 }
+                if (token.equals("MSG")) {
+                    String recievers = parts[1];
+                    String msg = parts[2];
+                    server.sendTo(recievers, msg);
+                }
+                
+                
+                
             }
 
             toClient.close();

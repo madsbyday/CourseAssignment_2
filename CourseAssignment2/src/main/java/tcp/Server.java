@@ -4,27 +4,38 @@ import java.net.*;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class Server {
-    
+
     private Map<String, ServerClientThread> handlers = new HashMap();
-    
-    public void addHandler(String user, ServerClientThread sct){
+
+    public void addHandler(String user, ServerClientThread sct) {
         handlers.put(user, sct);
         String msg = "CLIENTLIST:";
-        for(String u : handlers.keySet()) {
+        for (String u : handlers.keySet()) {
             msg += u + ",";
         }
-        for(ServerClientThread h : handlers.values()) {
+        for (ServerClientThread h : handlers.values()) {
             h.send(msg);
         }
     }
-    public void sendTo(String recivers, String msg){
-        if (recivers.equals("*")){
 
+    public void sendTo(String recivers, String msg) {
+        if (recivers.equals("*")) {
+            for (ServerClientThread h : handlers.values()) {
+                h.send(msg);
+            }
+        } else {
+            String[] names = recivers.split(",");
+            for(int i = 0; i < names.length; i++) {
+                
+                if(handlers.containsKey(names[i])){
+                   ServerClientThread h = handlers.get(names[i]);
+                   h.send(msg);
+                }
+            }
         }
     }
-    
+
     public void runServer(String ip, int port) {
         ServerSocket serverSocket = null;
 
@@ -40,7 +51,7 @@ public class Server {
 
                 while (true) {
                     Socket s = serverSocket.accept(); // BLOCKING CALL
-                    new ServerClientThread(s,this).start(); 
+                    new ServerClientThread(s, this).start();
                 }
             } catch (Exception e) {
                 System.err.println("Server log: Accepting connection failed...");
@@ -49,8 +60,9 @@ public class Server {
             System.out.println("Server log: Could not listen on port: " + port + "...");
         }
     }
+
     public static void main(String[] args) {
         new Server().runServer("127.0.0.1", 6666);
     }
- 
+
 }
