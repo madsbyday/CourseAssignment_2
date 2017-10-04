@@ -10,27 +10,43 @@ public class Server {
 
     public void addHandler(String user, ServerClientThread sct) {
         handlers.put(user, sct);
+        
         String msg = "CLIENTLIST:";
         for (String u : handlers.keySet()) {
             msg += u + ",";
         }
+        msg = msg.substring(0, msg.length() - 1);
         for (ServerClientThread h : handlers.values()) {
             h.send(msg);
         }
     }
 
-    public void sendTo(String recivers, String msg) {
+    public void removeHandler(String username) {
+        handlers.remove(username);
+        
+        String msg = "CLIENTLIST:";
+         for (String u : handlers.keySet()) {
+            msg += u + ",";
+        }
+        msg = msg.substring(0, msg.length() - 1);
+        for (ServerClientThread h : handlers.values()) {
+            h.send(msg);
+        }
+    }
+
+    public void sendTo(String recivers, String msg, String sender) {
+        String result = "MSGERS:" + sender + ":" + msg;
         if (recivers.equals("*")) {
             for (ServerClientThread h : handlers.values()) {
-                h.send(msg);
+                h.send(result);
             }
         } else {
             String[] names = recivers.split(",");
-            for(int i = 0; i < names.length; i++) {
-                
-                if(handlers.containsKey(names[i])){
-                   ServerClientThread h = handlers.get(names[i]);
-                   h.send(msg);
+            for (int i = 0; i < names.length; i++) {
+
+                if (handlers.containsKey(names[i])) {
+                    ServerClientThread h = handlers.get(names[i]);
+                    h.send(result);
                 }
             }
         }

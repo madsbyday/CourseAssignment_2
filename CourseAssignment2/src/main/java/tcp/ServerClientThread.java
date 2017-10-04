@@ -35,11 +35,11 @@ public class ServerClientThread extends Thread {
 
     public void run() {
         System.out.println("Server log: Client connected...");
-
+        
         try {
             String inputLine;;
-
-            while ((inputLine = fromClient.readLine()) != null) {
+            boolean running = true;
+            while ((inputLine = fromClient.readLine()) != null && running) {
 
                 String[] parts = inputLine.split(":");
                 String token = parts[0];
@@ -50,10 +50,12 @@ public class ServerClientThread extends Thread {
                 if (token.equals("MSG")) {
                     String recievers = parts[1];
                     String msg = parts[2];
-                    server.sendTo(recievers, msg);
+                    server.sendTo(recievers, msg, username);
                 }
-                
-                
+                if (token.equals("LOGOUT")){
+                    server.removeHandler(username);
+                    running = false;
+                }
                 
             }
 
