@@ -34,6 +34,11 @@ public class Client extends Thread {
     public void send(String msg) {
         output.println(msg);
     }
+    
+    public void login(String username) {
+        String login = "LOGIN:" + username;
+        output.println(login);
+    } 
 
     @Override
     public void run() {
