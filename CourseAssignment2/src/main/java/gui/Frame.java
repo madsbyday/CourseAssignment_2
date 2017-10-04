@@ -8,7 +8,9 @@ package gui;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 import tcp.Client;
+import tcp.SwingDataReady;
 
 /**
  *
@@ -145,6 +147,7 @@ public class Frame extends javax.swing.JFrame {
 
     private void btConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConnectActionPerformed
         c = new Client();
+        c.addObserver(new SwingDataReady(this));
         int port = Integer.parseInt(portBox.getText());
         try {
             c.connect(ipBox.getText(), port);
@@ -164,6 +167,16 @@ public class Frame extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    public void updateTextArea(String msg) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                recieveArea.append(msg + "\n");
+            }
+        });
+
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
