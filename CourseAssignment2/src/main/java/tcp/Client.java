@@ -1,57 +1,51 @@
 package tcp;
 
+import gui.IDataReady;
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class Client {
-    
-    private Socket clientSocket;
-    private PrintWriter toServer;
-    private BufferedReader fromServer;
+public class Client extends Thread {
 
-    private String input, output;
-    private BufferedReader clientInput;
+    Socket clientSocket;
+    private Scanner input;
+    private PrintWriter output;
+    private IDataReady observer;
+    private boolean keepRunning = true;
 
-    public Client(String ip, int port) throws IOException {
-        clientInput = new BufferedReader(new InputStreamReader(System.in));
+    public void addObserver(IDataReady observer) {
+        this.observer = observer;
+    }
 
+    public void closeConnection() {
+        send("QUIT");
+        keepRunning = false;
+    }
+
+    public void connect(String address, int port) throws IOException {
+        clientSocket = new Socket(address, port);
+        input = new Scanner(clientSocket.getInputStream());
+        output = new PrintWriter(clientSocket.getOutputStream(), true);
+        this.start();
+    }
+
+    public void send(String msg) {
+        output.println(msg);
+    }
+
+    @Override
+    public void run() {
+        while (keepRunning) {
+            String msg = input.nextLine();
+            observer.messegaeReady(msg);
+        }
         try {
-            System.out.println("Client message: Attemping to connect to host " + ip + " on port " + port);
-
-            clientSocket = new Socket(ip, port);
-            toServer = new PrintWriter(clientSocket.getOutputStream(), true);
-            fromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-            System.out.println("Client message: Connected to the server!");
-
-            System.out.println("Server message: " + fromServer.readLine());
-
-            System.out.print("Client input: ");
-
-            while ((input = clientInput.readLine()) != null) {
-                toServer.println(input);
-
-                output = fromServer.readLine();
-
-                System.out.println("Server message: " + output);
-
-                if (output.equals("GOODBYE...")) {
-                    System.out.println("Client message: Disconnected from the server!");
-
-                    break;
-                }
-
-                System.out.print("Client input: ");
-            }
-
-            clientInput.close();
-            toServer.close();
-            fromServer.close();
             clientSocket.close();
-            
-        } catch (Exception e) {
-            System.out.println("Client message: Unabe to connect to host: " + ip + " on port " + port);
+        }
+        catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 }

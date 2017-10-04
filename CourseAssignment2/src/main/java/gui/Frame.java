@@ -5,6 +5,11 @@
  */
 package gui;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import tcp.Client;
+
 /**
  *
  * @author vfgya_000
@@ -17,6 +22,7 @@ public class Frame extends javax.swing.JFrame {
     public Frame() {
         initComponents();
     }
+    Client c;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -37,6 +43,7 @@ public class Frame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         recieveArea = new javax.swing.JTextArea();
         areaLabel = new javax.swing.JLabel();
+        btSend = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,6 +78,13 @@ public class Frame extends javax.swing.JFrame {
 
         areaLabel.setText("Chat:");
 
+        btSend.setText("Send");
+        btSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSendActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -78,6 +92,7 @@ public class Frame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btSend)
                     .addComponent(areaLabel)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)
@@ -108,11 +123,13 @@ public class Frame extends javax.swing.JFrame {
                     .addComponent(ipBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(portBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btConnect))
-                .addGap(33, 33, 33)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
                 .addComponent(msgLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(msgBox, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btSend)
+                .addGap(24, 24, 24)
                 .addComponent(areaLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -127,12 +144,22 @@ public class Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_portBoxActionPerformed
 
     private void btConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConnectActionPerformed
-        
+        c = new Client();
+        int port = Integer.parseInt(portBox.getText());
+        try {
+            c.connect(ipBox.getText(), port);
+        } catch (IOException ex) {
+            Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btConnectActionPerformed
 
     private void msgBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_msgBoxActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_msgBoxActionPerformed
+
+    private void btSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSendActionPerformed
+        c.send(msgBox.getText());
+    }//GEN-LAST:event_btSendActionPerformed
 
     /**
      * @param args the command line arguments
@@ -172,6 +199,7 @@ public class Frame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel areaLabel;
     private javax.swing.JButton btConnect;
+    private javax.swing.JButton btSend;
     private javax.swing.JTextField ipBox;
     private javax.swing.JLabel ipLabel;
     private javax.swing.JScrollPane jScrollPane1;

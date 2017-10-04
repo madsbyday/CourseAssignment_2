@@ -10,5 +10,5 @@ package gui;
  * @author vfgya_000
  */
 public interface IDataReady {
-    
+    void messegaeReady(String msg);
 }
