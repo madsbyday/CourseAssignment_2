@@ -51,6 +51,7 @@ public class Frame extends javax.swing.JFrame {
         loginButton = new javax.swing.JButton();
         recieveBox = new javax.swing.JTextField();
         recieversLabel = new javax.swing.JLabel();
+        logoutBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -109,6 +110,13 @@ public class Frame extends javax.swing.JFrame {
 
         recieversLabel.setText("Recievers:");
 
+        logoutBtn.setText("Logout");
+        logoutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,6 +124,7 @@ public class Frame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(logoutBtn)
                     .addComponent(recieversLabel)
                     .addComponent(jLabel1)
                     .addComponent(btSend)
@@ -158,7 +167,7 @@ public class Frame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loginBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(loginButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(recieversLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(recieveBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -172,7 +181,9 @@ public class Frame extends javax.swing.JFrame {
                 .addComponent(areaLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(38, 38, 38)
+                .addComponent(logoutBtn)
+                .addGap(34, 34, 34))
         );
 
         pack();
@@ -210,6 +221,10 @@ public class Frame extends javax.swing.JFrame {
         c.login(loginBox.getText());
     }//GEN-LAST:event_loginButtonActionPerformed
 
+    private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logoutBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -230,6 +245,15 @@ public class Frame extends javax.swing.JFrame {
                 if (!(recieveArea.getText().equals("") || msgBox.getText().equals(""))) {
                     c.send("MSG:" + recieveBox.getText() + ":" + msgBox.getText());
                 }
+            }
+        });
+    }
+    
+    public void logout() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                c.send("LOGOUT");
             }
         });
     }
@@ -276,6 +300,7 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField loginBox;
     private javax.swing.JButton loginButton;
+    private javax.swing.JButton logoutBtn;
     private javax.swing.JTextField msgBox;
     private javax.swing.JLabel msgLabel;
     private javax.swing.JTextField portBox;
