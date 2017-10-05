@@ -1,4 +1,4 @@
-package tcp;
+package server;
 
 import java.net.*;
 import java.util.HashMap;
@@ -6,9 +6,9 @@ import java.util.Map;
 
 public class Server {
 
-    private Map<String, ServerClientThread> handlers = new HashMap();
+    private Map<String, ServerClient> handlers = new HashMap();
 
-    public void addHandler(String user, ServerClientThread sct) {
+    public void addHandler(String user, ServerClient sct) {
         handlers.put(user, sct);
         
         String msg = "CLIENTLIST:";
@@ -16,7 +16,7 @@ public class Server {
             msg += u + ",";
         }
         msg = msg.substring(0, msg.length() - 1);
-        for (ServerClientThread h : handlers.values()) {
+        for (ServerClient h : handlers.values()) {
             h.send(msg);
         }
     }
@@ -29,7 +29,7 @@ public class Server {
             msg += u + ",";
         }
         msg = msg.substring(0, msg.length() - 1);
-        for (ServerClientThread h : handlers.values()) {
+        for (ServerClient h : handlers.values()) {
             h.send(msg);
         }
     }
@@ -37,7 +37,7 @@ public class Server {
     public void sendTo(String recivers, String msg, String sender) {
         String result = "MSGERS:" + sender + ":" + msg;
         if (recivers.equals("*")) {
-            for (ServerClientThread h : handlers.values()) {
+            for (ServerClient h : handlers.values()) {
                 h.send(result);
             }
         } else {
@@ -45,7 +45,7 @@ public class Server {
             for (int i = 0; i < names.length; i++) {
 
                 if (handlers.containsKey(names[i])) {
-                    ServerClientThread h = handlers.get(names[i]);
+                    ServerClient h = handlers.get(names[i]);
                     h.send(result);
                 }
             }
@@ -67,18 +67,22 @@ public class Server {
 
                 while (true) {
                     Socket s = serverSocket.accept(); // BLOCKING CALL
-                    new ServerClientThread(s, this).start();
+                    new ServerClient(s, this).start();
                 }
-            } catch (Exception e) {
+            } 
+            catch (Exception e) {
                 System.err.println("Server log: Accepting connection failed...");
             }
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             System.out.println("Server log: Could not listen on port: " + port + "...");
         }
     }
 
     public static void main(String[] args) {
-        new Server().runServer("127.0.0.1", 6666);
+        String address = args[0];
+        int port = Integer.parseInt(args[1]);
+        new Server().runServer(address, port);
     }
 
 }
