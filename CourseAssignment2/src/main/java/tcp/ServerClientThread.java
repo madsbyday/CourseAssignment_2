@@ -20,12 +20,12 @@ import java.util.Date;
 public class ServerClientThread extends Thread {
 
     public Socket clientSocket;
-    
+
     Server server;
     PrintWriter toClient;
     BufferedReader fromClient;
     String username;
-    
+
     public ServerClientThread(Socket s, Server server) throws IOException {
         clientSocket = s;
         this.server = server;
@@ -35,39 +35,48 @@ public class ServerClientThread extends Thread {
 
     public void run() {
         System.out.println("Server log: Client connected...");
-        
+
         try {
             String inputLine;;
             boolean running = true;
+            boolean logedin = false;
             while ((inputLine = fromClient.readLine()) != null && running) {
 
                 String[] parts = inputLine.split(":");
                 String token = parts[0];
-                if (token.equals("LOGIN")) {
-                     username = parts[1];
-                     server.addHandler(username, this);
+
+                switch (token) {
+                    case "LOGIN":
+                        username = parts[1];
+                        if (!username.contains(",") && !logedin) {
+                            server.addHandler(username, this);
+                            logedin = true;
+                        }
+                        break;
+                    case "MSG":
+                        String recievers = parts[1];
+                        String msg = parts[2];
+                        server.sendTo(recievers, msg, username);
+                        break;
+                    case "LOGOUT":
+                        server.removeHandler(username);
+//                        running = false;
+                        break;
+                    default:
+                        running = false;
                 }
-                if (token.equals("MSG")) {
-                    String recievers = parts[1];
-                    String msg = parts[2];
-                    server.sendTo(recievers, msg, username);
-                }
-                if (token.equals("LOGOUT")){
-                    server.removeHandler(username);
-                    running = false;
-                }
-                
+
             }
 
             toClient.close();
             fromClient.close();
             clientSocket.close();
 
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Server log: Problem with Communication Server...");
         }
     }
+
     public void send(String msg) {
         toClient.println(msg);
     }

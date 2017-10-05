@@ -78,7 +78,7 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        new Server().runServer("127.0.0.1", 6666);
+        new Server().runServer("127.0.0.1", 8081);
     }
 
 }
