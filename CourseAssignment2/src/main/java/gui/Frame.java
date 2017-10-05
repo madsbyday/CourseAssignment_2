@@ -49,6 +49,8 @@ public class Frame extends javax.swing.JFrame {
         loginBox = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         loginButton = new javax.swing.JButton();
+        recieveBox = new javax.swing.JTextField();
+        recieversLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -105,6 +107,8 @@ public class Frame extends javax.swing.JFrame {
             }
         });
 
+        recieversLabel.setText("Recievers:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -112,6 +116,7 @@ public class Frame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(recieversLabel)
                     .addComponent(jLabel1)
                     .addComponent(btSend)
                     .addComponent(areaLabel)
@@ -131,7 +136,8 @@ public class Frame extends javax.swing.JFrame {
                                     .addGap(51, 51, 51)
                                     .addComponent(btConnect))
                                 .addComponent(loginButton))))
-                    .addComponent(loginBox, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(loginBox, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(recieveBox, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(60, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -152,7 +158,11 @@ public class Frame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loginBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(loginButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                .addComponent(recieversLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(recieveBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
                 .addComponent(msgLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(msgBox, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -188,7 +198,8 @@ public class Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_msgBoxActionPerformed
 
     private void btSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSendActionPerformed
-        c.send(msgBox.getText());
+
+        sendMessage();
     }//GEN-LAST:event_btSendActionPerformed
 
     private void loginBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBoxActionPerformed
@@ -210,6 +221,17 @@ public class Frame extends javax.swing.JFrame {
             }
         });
 
+    }
+
+    public void sendMessage() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                if (!(recieveArea.getText().equals("") || msgBox.getText().equals(""))) {
+                    c.send("MSG:" + recieveBox.getText() + ":" + msgBox.getText());
+                }
+            }
+        });
     }
 
     public static void main(String args[]) {
@@ -259,5 +281,7 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JTextField portBox;
     private javax.swing.JLabel portLabel;
     private javax.swing.JTextArea recieveArea;
+    private javax.swing.JTextField recieveBox;
+    private javax.swing.JLabel recieversLabel;
     // End of variables declaration//GEN-END:variables
 }
