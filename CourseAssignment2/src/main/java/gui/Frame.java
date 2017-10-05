@@ -55,8 +55,11 @@ public class Frame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        ipBox.setText("207.153.229.78");
+
         ipLabel.setText("IP:");
 
+        portBox.setText("8081");
         portBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 portBoxActionPerformed(evt);
@@ -180,10 +183,10 @@ public class Frame extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addComponent(areaLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(logoutBtn)
-                .addGap(34, 34, 34))
+                .addGap(30, 30, 30))
         );
 
         pack();
