@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
-import tcp.Client;
-import tcp.SwingDataReady;
+import client.Client;
+import client.SwingDataReady;
 
 /**
  *
@@ -222,7 +222,7 @@ public class Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
-        // TODO add your handling code here:
+        logout();
     }//GEN-LAST:event_logoutBtnActionPerformed
 
     /**
@@ -253,7 +253,7 @@ public class Frame extends javax.swing.JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                c.send("LOGOUT");
+                c.send("LOGOUT:");
             }
         });
     }

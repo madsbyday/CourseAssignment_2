@@ -57,6 +57,7 @@ public class ServerClient extends Thread {
                     case "LOGOUT":
                         server.removeHandler(username);
                         running = false;
+                        System.out.println("Client disconnected...");
                         break;
                 }
             }
@@ -64,7 +65,7 @@ public class ServerClient extends Thread {
             toClient.close();
             fromClient.close();
             clientSocket.close();
-            System.out.println("Client disconnected");
+            
         } catch (Exception e) {
             System.out.println("Server log: Problem with Communication Server...");
         }
