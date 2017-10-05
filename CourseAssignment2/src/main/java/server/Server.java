@@ -35,7 +35,7 @@ public class Server {
     }
 
     public void sendTo(String recivers, String msg, String sender) {
-        String result = "MSGERS:" + sender + ":" + msg;
+        String result = "MSGRES:" + sender + ":" + msg;
         if (recivers.equals("*")) {
             for (ServerClient h : handlers.values()) {
                 h.send(result);
