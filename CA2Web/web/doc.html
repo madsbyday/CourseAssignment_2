@@ -6,40 +6,46 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Documentation</title>
+        <title>CA2 - Doc</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="design.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        <h3>Testing</h3>
-        <p>
-            We had groupe 8 test our server and everyting work as expected. The chat protocol functions as it should. <br>
-            Then we tested out GUI client against thier server and our client could connect and input the correct functions. <br>
-        </p>
-        <h3>How we designed the system</h3>
-        <p>
-            There are 3 main components in our system; The server itself, a ServerClient that can send input and receive messages and our Clients. <br>
-            When we run our program, a server are created on a given IP and port number, we initially used a simple local host. <br>
-            When a user have successfully connected to the server, either through a GUI-Client or through a GUI-less client (TelNet) the server starts a new thread, and they get access to a ServerClient, where  they are can login. <br>
-            When they login, their ServerClient and name are put into a hashMap&lt;String, ServerClient >, this is how we keep track of our users. <br>
-            <br>
-            From here the user can type the commands the protocol allows eg. MSG:Mads:Hello. <br>
-            The handler breaks the input into a 3 size string-array eg. “MSG” : “&lt;receivers>” : “&lt;message>”. <br>
-            The handler identifies what command in the protocol has been called with the first string, and passes the receivers and the message to the server. The server uses the receivers to find the corresponding keys in our map, and sends the message to the clients. <br>
-            When using a GUI-client we have filtered the out/input to be more user friendly. <br>
-        </p>
-        
-        <h3>How to use the system</h3>
-        <ul>
-            <li>With the project we have given a download link to our GUI-client; Link:</li>
-            <li>Download it and run the client.</li>
-            <li>Connect to a serve with an IP or domain name, we have our own listed as default.</li>
-            <li>Login with a username of your choice, we assume it is unique</li>
-            <li>You MUST specify to whom you want to chat with by typing their name(s) into the “receiver's” text-field. Put a * for all users.</li>
-            <li>Congratulations! You can now chat away using the protocol.</li>
-        </ul>
-        
-        <h3>Who worked on what</h3>
-        <img src="WorkTable.PNG" alt="Work table"/>
+        <header><h1>Course Assignment 2 - Group 4</h1></header>
+        <div id="main">
+            <a class="toindex" href="index.html">To index page</a>
+            <h3>Testing</h3>
+            <p>
+                We had groupe 8 test our server and everyting work as expected. The chat protocol functions as it should. <br>
+                Then we tested out GUI client against thier server and our client could connect and input the correct functions. <br>
+            </p>
+            <h3>How we designed the system</h3>
+            <p>
+                There are 3 main components in our system; The server itself, a ServerClient that can send input and receive messages and our Clients. <br>
+                When we run our program, a server are created on a given IP and port number, we initially used a simple local host. <br>
+                When a user have successfully connected to the server, either through a GUI-Client or through a GUI-less client (TelNet) the server starts a new thread, and they get access to a ServerClient, where  they are can login. <br>
+                When they login, their ServerClient and name are put into a hashMap&lt;String, ServerClient >, this is how we keep track of our users. <br>
+                <br>
+                From here the user can type the commands the protocol allows eg. MSG:Mads:Hello. <br>
+                The handler breaks the input into a 3 size string-array eg. “MSG” : “&lt;receivers>” : “&lt;message>”. <br>
+                The handler identifies what command in the protocol has been called with the first string, and passes the receivers and the message to the server. The server uses the receivers to find the corresponding keys in our map, and sends the message to the clients. <br>
+                When using a GUI-client we have filtered the out/input to be more user friendly. <br>
+            </p>
+
+            <h3>How to use the system</h3>
+            <ul>
+                <li>With the project we have given a download link to our GUI-client; Link:</li>
+                <li>Download it and run the client.</li>
+                <li>Connect to a serve with an IP or domain name, we have our own listed as default.</li>
+                <li>Login with a username of your choice, we assume it is unique</li>
+                <li>You MUST specify to whom you want to chat with by typing their name(s) into the “receiver's” text-field. Put a * for all users.</li>
+                <li>Congratulations! You can now chat away using the protocol.</li>
+            </ul>
+
+            <h3>Who worked on what</h3>
+            <img src="WorkTable.PNG" alt="Work table"/>  
+        </div>
+        <footer>Made by Mads Andersen, Alexander Nielsen & Jonas Sabban</footer>
     </body>
 </html>
