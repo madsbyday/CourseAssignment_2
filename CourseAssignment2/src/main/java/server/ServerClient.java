@@ -13,6 +13,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -57,7 +59,7 @@ public class ServerClient extends Thread {
                     case "LOGOUT":
                         server.removeHandler(username);
                         running = false;
-                        System.out.println("Client disconnected...");
+                        System.out.println("Server log: Client disconnected...");
                         break;
                 }
             }
@@ -67,6 +69,13 @@ public class ServerClient extends Thread {
             clientSocket.close();
             
         } catch (Exception e) {
+            toClient.close();
+            try {
+                fromClient.close();
+                clientSocket.close();
+            } catch (IOException ex) {
+                Logger.getLogger(ServerClient.class.getName()).log(Level.SEVERE, null, ex);
+            }
             System.out.println("Server log: Problem with Communication Server...");
         }
     }
