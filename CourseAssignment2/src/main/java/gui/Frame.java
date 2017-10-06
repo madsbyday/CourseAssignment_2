@@ -55,7 +55,8 @@ public class Frame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        ipBox.setText("207.153.229.78");
+        ipBox.setText("207.154.229.78");
+        ipBox.setToolTipText("");
 
         ipLabel.setText("IP:");
 
